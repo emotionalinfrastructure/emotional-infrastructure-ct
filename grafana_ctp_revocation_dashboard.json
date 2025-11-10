@@ -1,0 +1,59 @@
+{
+  "title": "CTP \u2014 Revocation & Validation SLOs",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "p99 Token Validation Latency (ms)",
+      "targets": [
+        {
+          "expr": "ctp_token_validation_latency_seconds{quantile=\"0.99\"} * 1000"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Revocation Propagation (s)",
+      "targets": [
+        {
+          "expr": "ctp_revocation_propagation_seconds"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Ledger Append Latency (ms)",
+      "targets": [
+        {
+          "expr": "ctp_ledger_append_latency_seconds * 1000"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms"
+        }
+      }
+    },
+    {
+      "type": "bargauge",
+      "title": "Validation Errors by Reason (5m)",
+      "targets": [
+        {
+          "expr": "sum by (reason) (rate(ctp_validation_errors_total[5m]))"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 36,
+  "version": 1
+}

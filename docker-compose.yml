@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  issuer:
+    build: ../examples/python-fastapi
+    environment:
+      - CTP_SECRET=${CTP_SECRET:-dev-local-secret}
+      - CTP_AUDIENCE=svc://cx-ai/v1
+    ports:
+      - "8000:8000"
+  # Add Redis, Postgres, Grafana/Prometheus here as needed.

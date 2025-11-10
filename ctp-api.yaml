@@ -1,0 +1,108 @@
+openapi: 3.1.0
+info:
+  title: Consent Token Protocol (CTP) API
+  version: "0.1"
+paths:
+  /issue:
+    post:
+      summary: Issue a consent token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContextEnvelope'
+      responses:
+        '200':
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  jti:
+                    type: string
+  /introspect:
+    post:
+      summary: Validate a token and context
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntrospectRequest'
+      responses:
+        '200':
+          description: Introspection result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrospectResponse'
+  /revoke:
+    post:
+      summary: Revoke a token by JTI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeRequest'
+      responses:
+        '200':
+          description: Revocation accepted
+  /.well-known/jwks.json:
+    get:
+      summary: JWKS public keys
+      responses:
+        '200':
+          description: JSON Web Key Set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWKS'
+components:
+  schemas:
+    ContextEnvelope:
+      type: object
+      properties:
+        ts: { type: string, format: date-time }
+        channel: { type: string, enum: [voice, text, video] }
+        features: { type: array, items: { type: string } }
+        processor: { type: string }
+        purpose: { type: string }
+        retention: { type: string }
+        jurisdiction: { type: string }
+        ui_copy_id: { type: string }
+      required: [ts, channel, features, processor, purpose, retention, jurisdiction, ui_copy_id]
+    IntrospectRequest:
+      type: object
+      properties:
+        token: { type: string }
+        context_envelope: { $ref: '#/components/schemas/ContextEnvelope' }
+      required: [token, context_envelope]
+    IntrospectResponse:
+      type: object
+      properties:
+        active: { type: boolean }
+        sub: { type: string }
+        jti: { type: string }
+        scope: { type: array, items: { type: string } }
+        purpose: { type: string }
+        decision: { type: string, enum: [allow, deny] }
+        reason: { type: string }
+    RevokeRequest:
+      type: object
+      properties:
+        jti: { type: string }
+        reason: { type: string }
+      required: [jti]
+    JWKS:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: object

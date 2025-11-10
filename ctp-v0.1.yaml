@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Consent Token Protocol API
+  version: 0.1
+paths:
+  /token/issue:
+    post:
+      summary: Issue a new consent token
+      responses:
+        '200':
+          description: JWT issued
+  /token/validate:
+    post:
+      summary: Validate an existing consent token
+      responses:
+        '200':
+          description: Token valid

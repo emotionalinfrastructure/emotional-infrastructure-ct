@@ -1,0 +1,6 @@
+{
+  "iss": "https://rp.example/consent",
+  "aud": "svc://cx-ai/v1",
+  "scope": ["tone.read", "sentiment.read"],
+  "exp": 1731200460
+}
