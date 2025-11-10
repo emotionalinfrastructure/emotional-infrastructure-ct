@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ctp"
+version = "0.3.0b1"
+description = "Consent Token Protocol (CTP) core: signing, verification, and CLI"
+readme = "README.md"
+authors = [{name="Brittany Wright"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+dependencies = [
+  "cryptography>=42.0.0",
+  "pydantic>=2.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/emotionalinfrastructure/emotional-infrastructure-ct"
+
+[project.scripts]
+ctp-issue = "ctp.cli:issue_cmd"
+ctp-verify = "ctp.cli:verify_cmd"
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=ctp --cov-report=term-missing"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.coverage.report]
+fail_under = 80
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.mypy]
+python_version = "3.9"
+warn_unused_ignores = true
+strict = false
